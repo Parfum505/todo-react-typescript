@@ -1,3 +1,6 @@
 .complete {
   text-decoration: line-through;
 }
+.deleteTodoBtn {
+  margin-left: 20px;
+}

@@ -1,15 +1,35 @@
-import React from "react";
-import { TodoListItem } from "./TodoListItem";
+import React, { useState } from "react";
+import { TodoList } from "./TodoList";
+import { AddTodoForm } from "./AddTodoForm";
 
-const todos: Array<Todo> = [
-  { text: "Text", complete: true },
-  { text: "Text2", complete: false },
-];
 const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[] | []>([]);
+
+  const toggleTodo: ToggleTodo = (todoId) => {
+    const newTodos = (todos as Todo[]).map((todo: Todo) => {
+      if (todo.id === todoId) {
+        return { ...todo, complete: !todo.complete };
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+  };
+  const addTodo: AddTodo = (todoText) => {
+    const newTodo: Todo = {
+      text: todoText,
+      complete: false,
+      id: new Date().getTime(),
+    };
+    setTodos([...(todos as Todo[]), newTodo]);
+  };
+  const deleteTodo: DeleteTodo = (todoId) => {
+    const newTodos = (todos as Todo[]).filter((todo) => todo.id !== todoId);
+    setTodos(newTodos);
+  };
   return (
     <>
-      <TodoListItem todo={todos[0]} />
-      <TodoListItem todo={todos[1]} />
+      <AddTodoForm addTodo={addTodo} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
     </>
   );
 };
