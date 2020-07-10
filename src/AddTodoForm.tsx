@@ -1,24 +1,22 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { FormEvent, useRef } from "react";
 
 interface AddTodoFormProps {
   addTodo: AddTodo;
 }
 export const AddTodoForm: React.FC<AddTodoFormProps> = ({ addTodo }) => {
-  const [newTodo, setNewTodo] = useState<string>("");
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-    setNewTodo(e.target.value);
-  };
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const addedTodo = newTodo.trim();
+    const addedTodo = inputRef.current!.value.trim();
     if (addedTodo) {
       addTodo(addedTodo);
     }
-    setNewTodo("");
+    inputRef.current!.value = "";
   };
   return (
     <form action="" onSubmit={onSubmitHandler}>
-      <input type="text" value={newTodo} onChange={onChangeHandler} />
+      <input type="text" ref={inputRef} />
       <button type="submit">Add Todo</button>
     </form>
   );

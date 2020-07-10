@@ -3,10 +3,10 @@ import { TodoList } from "./TodoList";
 import { AddTodoForm } from "./AddTodoForm";
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[] | []>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   const toggleTodo: ToggleTodo = (todoId) => {
-    const newTodos = (todos as Todo[]).map((todo: Todo) => {
+    const newTodos = todos.map((todo: Todo) => {
       if (todo.id === todoId) {
         return { ...todo, complete: !todo.complete };
       }
@@ -20,10 +20,10 @@ const App: React.FC = () => {
       complete: false,
       id: new Date().getTime(),
     };
-    setTodos([...(todos as Todo[]), newTodo]);
+    setTodos(prev => [...prev, newTodo]);
   };
   const deleteTodo: DeleteTodo = (todoId) => {
-    const newTodos = (todos as Todo[]).filter((todo) => todo.id !== todoId);
+    const newTodos = todos.filter((todo) => todo.id !== todoId);
     setTodos(newTodos);
   };
   return (
